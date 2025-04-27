@@ -1,26 +1,21 @@
 # Prototype Pattern
 
-## What is it?
-The Prototype Pattern lets you create new objects by copying existing ones. This means you don’t need to depend on the class of the object you’re copying.
+## Intent
+The Prototype Pattern lets you create new objects by copying existing ones without making your code dependent on their classes.
 
-## Why use it?
+## Motivation & Problem
+When creating an object is more expensive or complex than copying an existing one, or when your code shouldn't depend on the concrete classes of objects you need to create. This pattern is especially useful when object creation requires accessing resources that are expensive to access or initialize.
+
+## Applicability
 Use the Prototype Pattern when:
-- You want to create objects based on a sample (prototype).
-- You want to avoid creating a lot of factory classes.
-- You need to copy objects with different states easily.
-
-## How does it work?
-1. Create a prototype interface with a `clone` method.
-2. Implement the `clone` method in your classes.
-3. Decide if you need a shallow copy (simple copy) or a deep copy (copy everything, even nested objects).
-
-## Examples in real life
-- Copying a document in a word processor.
-- Cloning characters or items in a game.
-- Creating object variations without manual setup.
+- Classes to instantiate are specified at runtime
+- You want to avoid building a class hierarchy of factories that parallels the hierarchy of products
+- Instances of a class can have one of only a few different combinations of state
+- Object creation is expensive compared to cloning
+- You need to keep the number of classes in a system to a minimum
 
 ## Structure
-```plaintext
+```
 +-------------------+
 |   Prototype       |
 |-------------------|
@@ -35,118 +30,100 @@ Use the Prototype Pattern when:
 +-------------------+
 ```
 
-## Pseudocode
+## Participants
+- **Prototype**: Declares an interface for cloning itself
+- **ConcretePrototype**: Implements the operation for cloning itself
+- **Client**: Creates a new object by asking a prototype to clone itself
+
+## Implementation
 ```typescript
 // Prototype interface
-interface Prototype {
-    clone(): Prototype;
+interface Prototype<T> {
+    clone(): T;
 }
 
 // Concrete Prototype
-class ConcretePrototype implements Prototype {
-    private data: string;
+class ConcretePrototype implements Prototype<ConcretePrototype> {
+    public primitive: any;
+    public component: object;
+    public circularReference: ComponentWithBackReference;
 
-    constructor(data: string) {
-        this.data = data;
-    }
-
-    // Clone method
     public clone(): ConcretePrototype {
-        return new ConcretePrototype(this.data);
+        const clone = Object.create(this);
+        
+        // Clone primitive field values
+        clone.primitive = this.primitive;
+        
+        // Clone simple object - this works only for simple objects
+        clone.component = Object.create(this.component);
+
+        // Clone the object with back reference
+        // Must handle circular references carefully
+        clone.circularReference = {
+            ...this.circularReference,
+            prototype: { ...this }
+        };
+        
+        return clone;
+    }
+}
+
+class ComponentWithBackReference {
+    public prototype: ConcretePrototype;
+    
+    constructor(prototype: ConcretePrototype) {
+        this.prototype = prototype;
     }
 }
 
 // Usage
-const original = new ConcretePrototype("Sample Data");
-const copy = original.clone();
-console.log(original === copy); // false
-console.log(copy);
+const p1 = new ConcretePrototype();
+p1.primitive = 245;
+p1.component = new Date();
+p1.circularReference = new ComponentWithBackReference(p1);
+
+const p2 = p1.clone();
+
+// Check if the primitive field values have been copied
+console.log(p1.primitive === p2.primitive); // true
+
+// Check that component references are different objects
+console.log(p1.component !== p2.component); // true
+
+// Check that circular references didn't cause infinite recursion
+console.log(p1.circularReference !== p2.circularReference); // true
+console.log(p1.circularReference.prototype !== p2.circularReference.prototype); // true
 ```
 
-## Handling Circular References
+### TypeScript-Specific Implementation Notes
+- Use interfaces to define the Prototype contract
+- TypeScript's generics can enforce type safety in clone operations
+- Consider using the structured clone API for deep cloning
+- Use Object.create() for shallow cloning of objects
+- Be careful with circular references, which require special handling
 
-When implementing the Prototype Pattern, you may encounter circular references in your objects. A circular reference occurs when two or more objects reference each other, creating a loop. This can make cloning more complex, especially for deep copies.
+## Real-World Examples
+- Object caching systems to reduce resource usage
+- Cloning configurations with slight variations
+- Duplicating complex data structures like documents
+- Copy-paste functionality in applications
+- Saving/restoring object states or creating snapshots
 
-### Example of Circular Reference
-```typescript
-class Node implements Prototype {
-    public value: string;
-    public next: Node | null = null;
+## Advantages & Disadvantages
 
-    constructor(value: string) {
-        this.value = value;
-    }
+### Advantages
+- You can clone objects without coupling to their concrete classes
+- You can get rid of repeated initialization code in favor of cloning
+- You can produce complex objects more conveniently
+- You get an alternative to inheritance when dealing with configuration presets
 
-    public clone(): Node {
-        const clonedNode = new Node(this.value);
-        if (this.next) {
-            clonedNode.next = this.next.clone();
-        }
-        return clonedNode;
-    }
-}
+### Disadvantages
+- Cloning complex objects with circular references might be challenging
+- Deep cloning can be resource-intensive for complex objects
+- Each concrete prototype might require special handling for proper cloning
 
-// Usage
-const first = new Node("first");
-const second = new Node("second");
-first.next = second;
-second.next = first; // Circular reference
-
-const clonedFirst = first.clone();
-console.log(clonedFirst);
-```
-
-### How to Handle It
-To handle circular references:
-1. Use a map or dictionary to keep track of already cloned objects.
-2. Check if an object has already been cloned before creating a new copy.
-
-### Example with Circular Reference Handling
-```typescript
-class NodeWithMap implements Prototype {
-    public value: string;
-    public next: NodeWithMap | null = null;
-
-    constructor(value: string) {
-        this.value = value;
-    }
-
-    public clone(map = new Map()): NodeWithMap {
-        if (map.has(this)) {
-            return map.get(this);
-        }
-
-        const clonedNode = new NodeWithMap(this.value);
-        map.set(this, clonedNode);
-
-        if (this.next) {
-            clonedNode.next = this.next.clone(map);
-        }
-
-        return clonedNode;
-    }
-}
-
-// Usage
-const firstNode = new NodeWithMap("first");
-const secondNode = new NodeWithMap("second");
-firstNode.next = secondNode;
-secondNode.next = firstNode; // Circular reference
-
-const clonedFirstNode = firstNode.clone();
-console.log(clonedFirstNode);
-```
-
-### Key Points
-- Circular references require special handling to avoid infinite loops.
-- Use a map to track already cloned objects during the cloning process.
-
-## Advantages
-- You can copy objects without depending on their classes.
-- Saves time by reusing pre-built objects.
-- Makes creating complex objects easier.
-
-## Disadvantages
-- Copying objects with nested structures can be tricky.
-- Deep copying can use a lot of resources.
-- Needs careful implementation to avoid errors.
+## Related Patterns
+- **Abstract Factory**: Prototype can be used when the number of classes is large or dynamic
+- **Composite**: Prototypes can be used to clone complex Composite structures
+- **Decorator**: Designs that make heavy use of Composite and Decorator patterns often benefit from Prototype as well
+- **Memento**: Can be used together with Prototype to store and restore object snapshots

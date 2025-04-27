@@ -1,18 +1,17 @@
-# Builder Design Pattern
+# Builder Pattern
 
 ## Intent
-Separate the construction of a complex object from its representation so that the same construction process can create different representations.
+Separate the construction of a complex object from its representation, allowing the same construction process to create different representations.
 
-## Motivation
-The Builder pattern is useful when:
-- The algorithm for creating a complex object should be independent of the parts that make up the object and how they're assembled.
-- The construction process must allow different representations for the object that's constructed.
+## Motivation & Problem
+When object creation involves complex steps that should be independent from the object itself. The pattern helps when an object needs to be created with many optional parameters or configurations, avoiding the "telescoping constructor" problem.
 
 ## Applicability
-Use the Builder pattern when:
-- The construction of an object is complex and should be separated from its representation.
-- You need to create different immutable objects using the same construction process.
-- You want to prevent "telescoping constructor" issues (constructors with many parameters).
+Use the Builder Pattern when:
+- The algorithm for creating a complex object should be independent of the parts that make up the object and how they're assembled
+- The construction process must allow different representations for the object that's constructed
+- You want to avoid constructors with numerous parameters ("telescoping constructor")
+- You need to create complex immutable objects
 
 ## Structure
 ```
@@ -27,42 +26,132 @@ Use the Builder pattern when:
 ```
 
 ## Participants
-- **Builder**: Specifies an abstract interface for creating parts of a Product object.
-- **ConcreteBuilder**: Constructs and assembles parts of the product by implementing the Builder interface. Defines and tracks the representation it creates.
-- **Director**: Constructs an object using the Builder interface.
-- **Product**: Represents the complex object being built.
+- **Builder**: Specifies an abstract interface for creating parts of a Product object
+- **ConcreteBuilder**: Constructs and assembles parts of the product by implementing the Builder interface
+- **Director**: Constructs an object using the Builder interface
+- **Product**: Represents the complex object being built
 
-## Benefits
-- Allows you to vary a product's internal representation.
-- Isolates code for construction and representation.
-- Gives you finer control over the construction process.
-- Can provide a clean API for object construction.
-
-## TypeScript Implementation Notes
-The implementation in this directory demonstrates:
-- A `Product` class that represents the complex object being built
-- A `Builder` interface that specifies how to build the parts
-- A `ConcreteBuilder` class that implements the building steps
-- A `Director` class that manages the construction process
-- A client code example showing how to use the pattern
-
-## Sample Usage
+## Implementation
 ```typescript
-// Create a director and a builder
+// The product class
+class Product {
+    private parts: string[] = [];
+    
+    public add(part: string): void {
+        this.parts.push(part);
+    }
+    
+    public listParts(): void {
+        console.log(`Product parts: ${this.parts.join(', ')}`);
+    }
+}
+
+// The builder interface
+interface Builder {
+    reset(): void;
+    buildPartA(): void;
+    buildPartB(): void;
+    buildPartC(): void;
+}
+
+// Concrete builder
+class ConcreteBuilder implements Builder {
+    private product: Product;
+    
+    constructor() {
+        this.reset();
+    }
+    
+    public reset(): void {
+        this.product = new Product();
+    }
+    
+    public buildPartA(): void {
+        this.product.add('Part A');
+    }
+    
+    public buildPartB(): void {
+        this.product.add('Part B');
+    }
+    
+    public buildPartC(): void {
+        this.product.add('Part C');
+    }
+    
+    public getProduct(): Product {
+        const result = this.product;
+        this.reset();
+        return result;
+    }
+}
+
+// Director class
+class Director {
+    private builder: Builder;
+    
+    public setBuilder(builder: Builder): void {
+        this.builder = builder;
+    }
+    
+    public buildMinimalViableProduct(): void {
+        this.builder.buildPartA();
+    }
+    
+    public buildFullFeaturedProduct(): void {
+        this.builder.buildPartA();
+        this.builder.buildPartB();
+        this.builder.buildPartC();
+    }
+}
+
+// Usage
 const director = new Director();
-const builder = new ConcreteBuilder1();
+const builder = new ConcreteBuilder();
 director.setBuilder(builder);
 
-// Build a minimal product
+console.log('Standard basic product:');
 director.buildMinimalViableProduct();
-const minimalProduct = builder.getProduct();
+builder.getProduct().listParts();
 
-// Build a full-featured product
+console.log('Standard full featured product:');
 director.buildFullFeaturedProduct();
-const fullProduct = builder.getProduct();
+builder.getProduct().listParts();
 
-// Custom product without using director
+console.log('Custom product:');
 builder.buildPartA();
 builder.buildPartC();
-const customProduct = builder.getProduct();
+builder.getProduct().listParts();
 ```
+
+### TypeScript-Specific Implementation Notes
+- Use interfaces to define the Builder contract
+- Use method chaining for a more fluent interface
+- Consider using TypeScript's optional parameters as an alternative for simple cases
+- Leverage TypeScript's type system to ensure correctness
+
+## Real-World Examples
+- Document generators creating different formats (PDF, HTML, plain text)
+- Meal preparation systems (burger with different ingredients)
+- UI element construction with many configuration options
+- Complex database query builders
+- Test data generators
+
+## Advantages & Disadvantages
+
+### Advantages
+- Allows you to vary a product's internal representation
+- Isolates code for construction and representation
+- Gives you finer control over the construction process
+- Provides a clean API for object construction with many parameters
+
+### Disadvantages
+- Requires creating a separate ConcreteBuilder for each different product type
+- Requires the builder classes to be mutable
+- May introduce unnecessary complexity for simple objects
+- Code duplication when products don't share a common interface
+
+## Related Patterns
+- **Factory Method**: Builder focuses on step-by-step construction, while Factory Method emphasizes class selection
+- **Abstract Factory**: Builder returns the product as a final step, while Abstract Factory returns the product immediately
+- **Composite**: Builders can use the Composite pattern to build tree structures
+- **Fluent Interface**: Not a GoF pattern but often used with Builder for method chaining
