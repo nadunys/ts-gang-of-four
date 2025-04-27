@@ -40,6 +40,10 @@ Patterns that focus on communication between objects:
 - **Template Method**: Defines the skeleton of an algorithm
 - **Visitor**: Separates algorithms from the objects they operate on
 
+## 📚 Documentation
+
+Visit our [documentation site](https://nadunys.github.io/ts-gang-of-four/) to explore detailed explanations, UML diagrams, and code examples for all 23 design patterns.
+
 ## 🚀 Getting Started
 
 ### Prerequisites

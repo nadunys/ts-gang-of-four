@@ -6,7 +6,11 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "dev": "ts-node-dev --respawn src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:docs": "npx docusaurus start website",
+    "build:docs": "npx docusaurus build website",
+    "serve:docs": "npx docusaurus serve website",
+    "deploy:docs": "GIT_USER=nadunys npx docusaurus deploy website"
   },
   "keywords": [
     "design patterns",
@@ -18,7 +22,15 @@
   "license": "ISC",
   "description": "TypeScript implementation of Gang of Four design patterns",
   "devDependencies": {
+    "@docusaurus/core": "^3.7.0",
+    "@docusaurus/preset-classic": "^3.7.0",
+    "@docusaurus/tsconfig": "^3.7.0",
     "@types/node": "^22.15.2",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "clsx": "^2.1.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
