@@ -1,53 +1,64 @@
 # Singleton Pattern
 
-## Intent
-Ensures that a class has only one instance and provides a global point of access to it.
+## What is it?
+The Singleton Pattern ensures that a class has only one instance and provides a way to access it globally.
 
-## Explanation
-The Singleton pattern is a creational design pattern that restricts the instantiation of a class to a single instance. This is useful when exactly one object is needed to coordinate actions across the system.
+## Why use it?
+Use the Singleton Pattern when:
+- You need only one instance of a class to coordinate actions across your system.
+- You want a single, shared object that can be accessed from anywhere.
 
-## When to use
-* When there must be exactly one instance of a class, and it must be accessible to clients from a well-known access point
-* When the sole instance should be extensible by subclassing, and clients should be able to use an extended instance without modifying their code
+## How does it work?
+1. The class has a private constructor to stop direct creation of objects.
+2. A static method is used to create or return the single instance.
+3. The instance is created only when needed (lazy initialization).
+
+## Examples in real life
+- A single database connection shared across the app.
+- A logger that writes messages to a file.
+- A configuration manager that stores app settings.
 
 ## Structure
+```plaintext
++-------------------+
+|   Singleton       |
+|-------------------|
+| - instance: Type  |
+|-------------------|
+| + getInstance():  |
+|   Type            |
++-------------------+
 ```
-+-----------------+
-|   Singleton     |
-+-----------------+
-| - instance      |
-+-----------------+
-| + getInstance() |
-+-----------------+
+
+## Pseudocode
+```typescript
+class Singleton {
+    private static instance: Singleton;
+
+    // Private constructor to prevent direct instantiation
+    private constructor() {}
+
+    // Static method to get the single instance
+    public static getInstance(): Singleton {
+        if (!Singleton.instance) {
+            Singleton.instance = new Singleton();
+        }
+        return Singleton.instance;
+    }
+}
+
+// Usage
+const singleton1 = Singleton.getInstance();
+const singleton2 = Singleton.getInstance();
+console.log(singleton1 === singleton2); // true
 ```
 
-## Real-world examples
-* Database connection pools
-* Configuration managers
-* Logger instances
-* Hardware access points (like printer spoolers)
+## Advantages
+- Ensures only one instance exists.
+- Saves resources by creating the instance only when needed.
+- Provides a global access point to the instance.
 
-## Implementation details
-* Private constructor to prevent direct instantiation
-* Static method to manage the instance
-* Lazy initialization (create on first use)
-* Thread safety considerations in multithreaded environments
-
-## TypeScript implementation notes
-In TypeScript, we implement the Singleton pattern by:
-1. Making the constructor private
-2. Creating a static instance variable
-3. Providing a static method for retrieving the instance
-
-## Pros and Cons
-
-### Pros
-* You can be sure that a class has only a single instance
-* The singleton object is initialized only when it's requested for the first time
-* You gain a global access point to that instance
-
-### Cons
-* Violates the Single Responsibility Principle (class manages its own creation)
-* Can mask bad design, such as components knowing too much about each other
-* Requires special treatment in a multithreaded environment
-* Makes unit testing more difficult
+## Disadvantages
+- Makes testing harder because of the global state.
+- Can lead to bad design if overused.
+- Needs extra care in multithreaded programs.
