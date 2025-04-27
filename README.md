@@ -101,3 +101,8 @@ Each pattern folder contains:
 - Implementation files
 - A README.md with detailed explanation
 - Example usage
+
+## 📖 References
+
+- [Refactoring.guru - Design Patterns](https://refactoring.guru/design-patterns) - An excellent resource with visual explanations and code examples for all design patterns
+- Design Patterns: Elements of Reusable Object-Oriented Software by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides (the "Gang of Four")
