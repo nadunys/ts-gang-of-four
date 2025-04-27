@@ -30,59 +30,52 @@
   <path d="M 60,60 L 60,190 L 190,190 M 80,190 L 80,80 L 190,80" 
         stroke="#ffffff25" fill="none" stroke-width="1" stroke-linecap="round" />
   
-  <!-- Design Pattern Blueprint Elements -->
+  <!-- People Figures - 4 developers representing the Gang of Four -->
   <g transform="translate(45, 45) scale(0.8)">
-    <!-- Factory Pattern -->
-    <g transform="translate(0, 0)">
-      <polygon points="0,20 40,20 45,40 -5,40" fill="#FFC10780" stroke="white" stroke-width="2" />
-      <rect x="-3" y="40" width="46" height="25" fill="#FFC10780" stroke="white" stroke-width="2" />
-      <text x="20" y="72" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Factory</text>
+    <!-- Person 1 - Top Left -->
+    <g transform="translate(20, 30)">
+      <circle cx="0" cy="0" r="10" fill="#FFC107" stroke="#ffffff" stroke-width="1" />
+      <path d="M -3,1 A 3,3 0 0,0 3,1 M -5,-3 L -2,0 M 5,-3 L 2,0" stroke="#ffffff" stroke-width="1.5" fill="none" />
+      <path d="M 0,10 L 0,24 M -10,15 L 0,20 L 10,15 M -8,34 L 0,24 L 8,34" stroke="#ffffff" stroke-width="2" fill="none" />
     </g>
     
-    <!-- Singleton Pattern -->
-    <g transform="translate(95, 0)">
-      <circle cx="0" cy="30" r="24" fill="#4CAF5080" stroke="white" stroke-width="2" />
-      <circle cx="0" cy="30" r="12" fill="#4CAF5040" stroke="white" stroke-width="1.5" />
-      <circle cx="0" cy="30" r="4" fill="white" />
-      <text x="0" y="65" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Singleton</text>
+    <!-- Person 2 - Top Right -->
+    <g transform="translate(180, 30)">
+      <circle cx="0" cy="0" r="10" fill="#4CAF50" stroke="#ffffff" stroke-width="1" />
+      <path d="M -3,1 A 3,3 0 0,0 3,1 M -5,-3 L -2,0 M 5,-3 L 2,0" stroke="#ffffff" stroke-width="1.5" fill="none" />
+      <path d="M 0,10 L 0,24 M -10,15 L 0,20 L 10,15 M -8,34 L 0,24 L 8,34" stroke="#ffffff" stroke-width="2" fill="none" />
     </g>
     
-    <!-- Observer Pattern -->
-    <g transform="translate(190, 0)">
-      <circle cx="0" cy="30" r="24" fill="#FF572280" stroke="white" stroke-width="2" />
-      <circle cx="0" cy="30" r="14" fill="#FF572240" stroke="white" stroke-width="1.5" />
-      <circle cx="0" cy="30" r="6" fill="white" />
-      <text x="0" y="65" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Observer</text>
+    <!-- Person 3 - Bottom Left -->
+    <g transform="translate(20, 120)">
+      <circle cx="0" cy="0" r="10" fill="#03A9F4" stroke="#ffffff" stroke-width="1" />
+      <path d="M -3,1 A 3,3 0 0,0 3,1 M -5,-3 L -2,0 M 5,-3 L 2,0" stroke="#ffffff" stroke-width="1.5" fill="none" />
+      <path d="M 0,10 L 0,24 M -10,15 L 0,20 L 10,15 M -8,34 L 0,24 L 8,34" stroke="#ffffff" stroke-width="2" fill="none" />
     </g>
     
-    <!-- Connecting lines representing relationships between patterns -->
-    <path d="M 20,40 C 40,60 60,0 95,30" stroke="white" stroke-width="1.5" 
+    <!-- Person 4 - Bottom Right -->
+    <g transform="translate(180, 120)">
+      <circle cx="0" cy="0" r="10" fill="#9C27B0" stroke="#ffffff" stroke-width="1" />
+      <path d="M -3,1 A 3,3 0 0,0 3,1 M -5,-3 L -2,0 M 5,-3 L 2,0" stroke="#ffffff" stroke-width="1.5" fill="none" />
+      <path d="M 0,10 L 0,24 M -10,15 L 0,20 L 10,15 M -8,34 L 0,24 L 8,34" stroke="#ffffff" stroke-width="2" fill="none" />
+    </g>
+    
+    <!-- Connecting lines representing collaboration between people -->
+    <path d="M 20,40 C 40,60 160,60 180,40" stroke="white" stroke-width="1.5" 
           stroke-dasharray="5,3" marker-end="url(#arrow)" />
-    <path d="M 120,30 C 140,60 160,0 190,30" stroke="white" stroke-width="1.5" 
+    <path d="M 180,130 C 160,110 40,110 20,130" stroke="white" stroke-width="1.5" 
           stroke-dasharray="5,3" marker-end="url(#arrow)" />
-          
-    <!-- Composite Pattern -->
-    <g transform="translate(0, 105)">
-      <rect x="-10" y="0" width="60" height="40" rx="5" fill="#03A9F480" stroke="white" stroke-width="2" />
-      <rect x="5" y="10" width="30" height="20" rx="3" fill="#03A9F440" stroke="white" stroke-width="1.5" />
-      <text x="20" y="50" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Composite</text>
-    </g>
-    
-    <!-- Strategy Pattern -->
-    <g transform="translate(95, 105)">
-      <polygon points="0,0 40,0 30,40 -10,40" fill="#9C27B080" stroke="white" stroke-width="2" />
-      <line x1="0" y1="15" x2="30" y2="15" stroke="white" stroke-width="1.5" />
-      <line x1="-5" y1="30" x2="25" y2="30" stroke="white" stroke-width="1.5" />
-      <text x="15" y="50" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Strategy</text>
-    </g>
+    <path d="M 20,40 C 0,60 0,100 20,130" stroke="white" stroke-width="1.5" 
+          stroke-dasharray="5,3" marker-end="url(#arrow)" />
+    <path d="M 180,40 C 200,60 200,100 180,130" stroke="white" stroke-width="1.5" 
+          stroke-dasharray="5,3" marker-end="url(#arrow)" />
   </g>
   
   <!-- TypeScript Logo with enhanced 3D effect -->
   <g transform="translate(125, 180)" text-anchor="middle">
     <rect x="-40" y="-25" width="80" height="40" rx="5" fill="#ffffff" />
     <text x="0" y="0" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="url(#bg-gradient)">TS</text>
-    <rect x="-65" y="20" width="130" height="25" rx="12.5" fill="#ffffff90" />
+    <rect x="-80" y="20" width="160" height="25" rx="12.5" fill="#ffffff90" />
     <text x="0" y="37" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1a365d">DESIGN PATTERNS</text>
-    <text x="0" y="60" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#ffffff">Gang of Four</text>
   </g>
 </svg>
