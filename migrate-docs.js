@@ -195,50 +195,45 @@ const migratePatternDocs = () => {
       const readmePath = path.join(categoryDir, pattern, 'README.md');
       const docPath = path.join(docsCategoryDir, `${pattern}.md`);
       
-      // Check if the doc file already exists
-      if (!fs.existsSync(docPath)) {
-        if (fs.existsSync(readmePath)) {
-          // If README exists, convert it to a doc file
-          let content = fs.readFileSync(readmePath, 'utf8');
-          
-          // Skip the file path comment if present
-          if (content.startsWith('//')) {
-            const lineEndIndex = content.indexOf('\n');
-            if (lineEndIndex > 0) {
-              content = content.substring(lineEndIndex + 1);
-            }
+      if (fs.existsSync(readmePath)) {
+        // If README exists, convert it to a doc file
+        let content = fs.readFileSync(readmePath, 'utf8');
+        
+        // Skip the file path comment if present
+        if (content.startsWith('//')) {
+          const lineEndIndex = content.indexOf('\n');
+          if (lineEndIndex > 0) {
+            content = content.substring(lineEndIndex + 1);
           }
-          
-          // Add frontmatter with sidebar position
-          const frontmatter = `---
+        }
+        
+        // Add frontmatter with sidebar position
+        const frontmatter = `---
 sidebar_position: ${patternIndex + 1}
 ---
 
 `;
-          
-          // Add GitHub repository link at the end if not already present
-          let repoLink = '';
-          if (!content.includes('github.com/nadunys/ts-gang-of-four')) {
-            repoLink = `\n\n## Example Code
+        
+        // Add GitHub repository link at the end if not already present
+        let repoLink = '';
+        if (!content.includes('github.com/nadunys/ts-gang-of-four')) {
+          repoLink = `\n\n## Example Code
 You can find the complete implementation of this pattern in our repository:
 - [${formatPatternName(pattern)} Implementation](https://github.com/nadunys/ts-gang-of-four/tree/main/src/${category}/${pattern})
 `;
-          }
-          
-          // Create the final content
-          const finalContent = frontmatter + content + repoLink;
-          
-          // Write the file
-          fs.writeFileSync(docPath, finalContent);
-          console.log(`✅ Migrated ${category}/${pattern}`);
-        } else {
-          // Create a placeholder file if README doesn't exist
-          const content = generatePlaceholderContent(category, pattern);
-          fs.writeFileSync(docPath, content);
-          console.log(`📄 Created placeholder for ${category}/${pattern}`);
         }
+        
+        // Create the final content
+        const finalContent = frontmatter + content + repoLink;
+        
+        // Write the file
+        fs.writeFileSync(docPath, finalContent);
+        console.log(`✅ Migrated ${category}/${pattern}`);
       } else {
-        console.log(`⏭️ Skipping ${category}/${pattern} (already exists)`);
+        // Create a placeholder file if README doesn't exist
+        const content = generatePlaceholderContent(category, pattern);
+        fs.writeFileSync(docPath, content);
+        console.log(`📄 Created placeholder for ${category}/${pattern}`);
       }
     });
   });
