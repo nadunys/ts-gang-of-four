@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Adapter Pattern
 
 ## Intent
@@ -99,7 +95,3 @@ console.log(adapter.request());
 - **Decorator**: Enhances an object without changing its interface, while Adapter changes the interface.
 - **Proxy**: Provides a surrogate for another object without changing its interface, unlike Adapter.
 - **Facade**: Simplifies a complex subsystem interface, while Adapter makes incompatible interfaces compatible.
-
-## Example Code
-You can find the complete implementation of this pattern in our repository:
-- [Adapter Implementation](https://github.com/nadunys/ts-gang-of-four/tree/main/src/structural/adapter)
