@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Bridge Pattern
 
 ## Intent
@@ -123,7 +119,3 @@ console.log(abstraction.operation());
 - **Abstract Factory**: Can be used with Bridge to create appropriate implementation objects
 - **Strategy**: Similar to Bridge but focuses on switching algorithms rather than implementations
 - **Composite**: Can be used in conjunction with Bridge to create tree structures with different implementations
-
-## Example Code
-You can find the complete implementation of this pattern in our repository:
-- [Bridge Implementation](https://github.com/nadunys/ts-gang-of-four/tree/main/src/structural/bridge)
